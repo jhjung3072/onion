@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>지역 관리 폼 | [[${pageTitle}]]</h2>
+	</div>
+			
+	<form th:action="@{/locations/save}" method="post" style="max-width: 500px; margin: 0 auto" enctype="multipart/form-data" onsubmit="return checkUnique(this)"
+		th:object="${location}">
+		<input type="hidden" th:field="*{id}" />
+	<div class="border border-secondary rounded p-3">
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">지역 이름:</label>
+			<div class="col-sm-8">
+				<input type="text" class="form-control" th:field="*{name}" required minlength="1" maxlength="128"  />
+			</div>
+		</div>
+		
+
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">상위 지역:</label>
+			<div class="col-sm-8">
+				<select class="form-control" th:field="*{parent}">
+					<option value="0">[상위 없음]</option>
+					
+					<th:block th:each="cat : ${listLocations}">
+					<option th:value="${cat.id}">[[${cat.name}]]</option>
+					</th:block>
+					
+				</select>
+			</div>
+		</div>		
+
+				
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">활성화:</label>
+			<div class="col-sm-8">
+				<input type="checkbox" th:field="*{enabled}" />
+			</div>
+		</div>
+						
+		<div class="text-center">
+			<input type="submit" value="저장" class="btn btn-primary m-3" />
+			<input type="button" value="취소" class="btn btn-secondary" id="buttonCancel" />
+		</div>
+	</div>
+	</form>
+	
+	<div th:replace="modal_fragments :: modal_dialog"></div>
+	
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script type="text/javascript">
+	MAX_FILE_SIZE = 102400; // 100KB
+	moduleURL = "[[@{/locations}]]";
+	
+	function checkUnique(form) {
+		catId = $("#id").val();
+		catName = $("#name").val();
+		catAlias = $("#alias").val();
+		
+		csrfValue = $("input[name='_csrf']").val();
+		
+		url = "[[@{/locations/check_unique}]]";
+		
+		params = {id: catId, name: catName, _csrf: csrfValue};
+		
+		$.post(url, params, function(response) {
+			if (response == "OK") {
+				form.submit();
+			} else if (response == "DuplicateName") {
+				showWarningModal("같은 이름의 지역가 있습니다. " + catName);
+			} else {
+				showErrorModal("알 수 없는 응답입니다.");
+			}
+			
+		}).fail(function() {
+			showErrorModal("서버와 연결할 수 없습니다.");
+		});
+		
+		return false;
+	}
+	
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

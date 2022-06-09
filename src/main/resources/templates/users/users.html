@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓', 'none')" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>유저 관리 페이지</h2>
+		<a th:href="@{/users/new}" class="fas fa-user-plus fa-2x icon-dark mr-2"></a>
+		<a th:href="@{/users/export/excel}" class="fas fa-file-excel fa-2x icon-dark mr-2"></a>		
+
+	</div>
+
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-dark">
+				<tr>
+					<th class="hideable-column">
+						<th th:replace="fragments :: column_link('id', '유저 ID', 'tag')" />
+					</th>
+					<th class="hideable-column">
+						<th th:replace="fragments :: column_link('email', '이메일', 'tag')" />
+					</th>
+					<th th:replace="fragments :: column_link('nickname', '닉네임', 'none')" />
+					<th th:replace="fragments :: column_link('enabled', '활성화', 'none')" />
+					<th></th>
+				</tr>								
+			</thead>
+			<tbody>
+				<tr th:each="user : ${listUsers}">
+					<td class="hideable-column">[[${user.id}]]</td>
+					<td class="hideable-column">[[${user.email}]]</td>
+					<td>[[${user.nickname}]]</td>
+					<td>
+						<div th:replace="fragments :: status(${user.enabled}, 'user', '/users/' + ${user.id})" />
+					</td>
+					
+					<td>
+						<div th:replace="fragments :: edit('user', '/users/edit/' + ${user.id})" />
+						&nbsp;&nbsp;
+						<div th:replace="fragments :: delete('user', ${user.id}, '/users/delete/' + ${user.id}, true)" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	
+	<div th:replace="fragments :: pagination('유저')"></div>
+	
+	<div th:replace="modal_fragments :: confirm_modal" />
+		
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/users}]]";
+	entityName = "user";
+</script>
+</body>
+</html>

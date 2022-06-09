@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓-지역', 'none')" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>지역 관리 페이지</h2>
+		
+		<a th:href="@{/locations/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+		<a th:href="@{/locations/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+				
+	</div>
+
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-dark">
+				<tr>
+					<th>ID</th>
+					<th th:replace="fragments :: column_link('name', '지역명', 'none')" />
+					<th>활성화</th>
+					<th></th>
+				</tr>								
+			</thead>
+			<tbody>
+				<tr th:each="cat : ${listLocations}">
+					<td>[[${cat.id}]]</td>
+					<td>[[${cat.name}]]</td>
+					<td>
+						<div th:replace="fragments :: status(${cat.enabled}, 'location', '/locations/' + ${cat.id})" />
+					</td>
+					<td>
+						<div th:replace="fragments :: edit('location', '/locations/edit/' + ${cat.id})" />
+						&nbsp; 
+						<div th:replace="fragments :: delete('location', ${cat.id}, '/locations/delete/' + ${cat.id}, ${!cat.hasChildren})" />
+					</td>					
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div th:if="${keyword != null}" class="text-center">
+		<span>해당 지역이 없습니다.</span>
+		<div th:replace="fragments :: pagination('지역')"></div>
+	</div>
+	
+	<th:block th:unless="${keyword != null}">
+	<div th:replace="fragments :: pagination('상위 지역')"></div>
+	</div>
+	
+	<div th:replace="modal_fragments :: confirm_modal" />
+	
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/locations}]]";
+
+	$(document).ready(function() {
+		$(".link-delete").on("click", function(e) {
+			e.preventDefault();
+			showDeleteConfirmModal($(this), 'location');
+		});
+	});
+	entityName = "location";
+</script>
+</body>
+</html>
