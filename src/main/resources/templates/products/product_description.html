@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content" remove="tag">
+
+	<div class="m-2">
+		<label>물건의 정보를 요약해주세요</label>
+		<textarea class="form-control" th:field="*{shortDescription}" rows="5" required></textarea>
+	</div>
+
+	<div class="m-2">
+		<label>물건의 자세한 내용을 적어주세요.</label>
+		<textarea class="form-control" th:field="*{fullDescription}" rows="10" required></textarea>
+	</div>
+</div>
+</body>
+</html>

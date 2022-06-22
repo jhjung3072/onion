@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓', 'none')" />
+<body class="bg-light">
+<div th:replace="navigation :: menu"></div>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+<div class="col-2">
+    <div th:replace="fragments.html :: settings-menu(currentMenu='notification')"></div>
+</div>
+<div class="col-8">
+    <div class="row mt-3">
+        <div th:object="${user}" style="max-width: 600px; margin: 0 auto">
+            <input type="hidden" name="redirect" th:value="${param.redirect}" />
+            <div th:if="${message != null}" class="alert alert-success text-center">
+                [[${message}]]
+            </div>
+            <div class="border border-secondary rounded p-3" style="width: 300px">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">알림설정:</label>
+                    <div class="col-sm-8" >
+                        <div th:replace="fragments :: status(${user.productPostedByWeb}, 'notification', '/notification')" class="form-control"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+    </div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+    moduleURL = "[[@{/notification}]]";
+    entityName = "notification";
+</script>
+</body>
+</html>

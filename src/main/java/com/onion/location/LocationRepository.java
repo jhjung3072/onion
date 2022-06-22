@@ -3,6 +3,7 @@ package com.onion.location;
 
 
 import com.onion.domain.Location;
+import com.onion.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,7 +20,7 @@ public interface LocationRepository extends PagingAndSortingRepository<Location,
 	@Query("SELECT l FROM Location l WHERE l.parent.id is NULL")
 	List<Location> findRootLocations(Sort sort);
 
-	// 지역 카테고리 페이징
+	// 지역 페이징
 	@Query("SELECT l FROM Location l WHERE l.parent.id is NULL")
 	Page<Location> findRootLocations(Pageable pageable);
 	
@@ -35,4 +36,5 @@ public interface LocationRepository extends PagingAndSortingRepository<Location,
 	@Query("UPDATE Location l SET l.enabled = ?2 WHERE l.id = ?1")
 	@Modifying
 	void updateEnabledStatus(Integer id, boolean enabled);
+
 }

@@ -2,16 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragments :: page_head('양파 마켓', 'none')" />
-<body>
-<div class="container-fluid">
-	<div th:replace="navigation :: menu"></div>
-	<div style="text-align: center;">
-		<h2>오이마켓</h2>
-		어서오세요~!! 정재호가 만든 포트폴리오용 웹사이트입니다.
-
+<body class="bg-light">
+<div th:replace="navigation :: menu"></div>
+<section class="jumbotron text-center">
+	<div class="container">
+		<h1>오이마켓</h1>
+		<p class="lead text-muted">
+			지역 기반으로 중고 물건을 찾아보세요!<br/>
+		</p>
+		<p>
+			<a th:href="@{/register}" class="btn btn-primary my-2">회원 가입</a>
+			<a th:href="@{/login}" class="btn btn-primary my-2">로그인</a>
+		</p>
 	</div>
-
-
+</section>
+<div class="container">
+	<h2 style="text-align: center">전 지역 물건</h2>
+	<div class="row justify-content-center pt-3">
+		<div th:replace="fragments :: product-list (listProducts=${listProducts})"></div>
+	</div>
 </div>
+<div th:replace="fragments :: footer"></div>
+
 </body>
 </html>

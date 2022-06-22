@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+<body>
+<div class="bg-light">
+	<div th:replace="navigation :: menu"></div>
+
+	<div class="row" style="margin-top: 80px">
+
+		<div class="col-sm">
+			<form th:object="${user}" style="width: 600px; margin: 0 auto">
+				<input type="hidden" name="redirect" th:value="${param.redirect}" />
+				<div th:if="${message != null}" class="alert alert-success text-center">
+					[[${message}]]
+				</div>
+				<div class="border border-secondary rounded p-3">
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">자기소개:</label>
+						<div th:if="${#strings.isEmpty(user.bio)}" class="col-sm-8">
+							아직 자기소개가 입력되지 않았습니다.
+						</div>
+						<div class="col-sm-8">
+							[[${user.bio}]]
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">닉네임:</label>
+						<div class="col-sm-8">
+							[[${user.nickname}]]
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">거래가능 지역<br/></label>
+						<div class="col-sm-8">
+							[[${user.location}]]
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">매너점수:</label>
+						<div class="col-sm-8">
+							[[${user.mannerPoint}]] 점
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">가입날짜:</label>
+						<div class="col-sm-8">
+							<span th:text="${#temporals.format(user.joinedAt, 'yyyy년 M월 dd일 가입')}"/>
+						</div>
+					</div>
+
+				</div>
+			</form>
+	</div>
+	</div>
+</div>
+
+</body>
+</html>

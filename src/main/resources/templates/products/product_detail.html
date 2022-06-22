@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+<body>
+<div class="bg-light">
+	<div th:replace="navigation :: menu"></div>
+	<div th:replace="breadcrumb :: content"></div>
+
+	<div class="row" style="margin-top: 80px">
+		<div class="col-sm" style="margin-left: 70px" >
+			<div>
+				<img id="bigImage" th:src="@{${product.mainImagePath}}" class="img-fluid" index="0" />
+			</div>
+			<div class="row justify-content-center">
+				<div class="m-2 border border-secondary p-1">
+					<img class="image-thumbnail" th:src="@{${product.mainImagePath}}" height="50" index="0" />
+				</div>
+				<th:block th:each="extraImage, status : ${product.images}">
+				<div class="m-2 border border-secondary p-1">
+					<img class="image-thumbnail" th:src="@{${extraImage.imagePath}}" height="50"
+						th:index="${status.count}" />
+				</div>
+				</th:block>
+			</div>
+		</div>
+		<div class="col-sm">
+			<div style="margin-bottom: 50px">
+				<h2>[[${product.name}]]</h2>
+			</div>
+			<div style="margin-bottom: 20px">
+				<span>판매자: [[${product.seller.nickname}]]</span>
+			</div>
+
+			<div style="margin-bottom: 20px">
+				<span>거래지역: [[${product.location.name}]]</span>
+			</div>
+			<div style="margin-bottom: 20px">
+				물건 가격:
+				<span th:utext="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></span> 원
+			</div>
+			<div style="margin-bottom: 20px">
+				판매자 매너 점수: [[${product.seller.mannerPoint}]] 점</span>
+			</div>
+
+			<div>&nbsp;</div>
+			<div th:utext="${product.shortDescription}"></div>
+
+				<th:block th:if="${canEdit}">
+					<a class="link-detail" th:href="@{'/my-products/edit/' + ${product.id}}" >수정하기</a>
+				</th:block>
+
+				<th:block th:if="${!canEdit}">
+					<input type="button" value="쪽지보내기" class="btn btn-primary" />
+				</th:block>
+
+		</div>
+	</div>
+	
+	<div class="row" style="height: 800px; margin-left: 70px" >
+		<div class="col-10" >
+			<div style="margin-bottom: 80px"><hr/></div>
+			<div style="margin-bottom: 50px">
+				<h3>물건 상세 설명:</h3>
+			</div>
+			<div th:utext="${product.fullDescription}"></div>
+		</div>
+	</div>
+
+	<div th:replace="products/images_carousel :: content"></div>
+	<div th:replace="fragments :: modal_dialog"></div>	
+
+</div>	
+<script type="text/javascript">
+	contextPath = "[[@{/}]]";
+	productId = "[[${product.id}]]";
+	var csrfHeaderName = "[[${_csrf.headerName}]]";
+	var csrfValue = "[[${_csrf.token}]]";	
+
+	
+	$(document).ready(function() {
+		bigImage = $("#bigImage");
+		
+		$(".image-thumbnail").mouseover(function() {
+			currentImageSource = $(this).attr("src");
+			currentImageIndex = $(this).attr("index");
+			
+			bigImage.attr("src", currentImageSource);
+			bigImage.attr("index", currentImageIndex);
+		});
+		
+		bigImage.on("click", function() {
+			$("#carouselModal").modal("show");
+			imageIndex = parseInt(bigImage.attr("index"));
+			$("#carouselExampleIndicators").carousel(imageIndex);
+		});
+
+	});
+	
+</script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common_modal.js}"></script>
+</body>
+</html>

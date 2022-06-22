@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('오이마켓', 'none')" />
+<body>
+<div class="bg-light">
+	<div th:replace="navigation :: menu"></div>
+	<div style="margin: 80px;">
+		<h2>나의 물건 목록</h2>
+		
+	</div>
+
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-dark">
+				<tr>
+					<th class="hideable-column"> 
+					<th th:replace="fragments :: column_link('id', 'ID', 'tag')" />
+					</th>
+					
+					<th>메인 이미지</th>
+					<th th:replace="fragments :: column_link('name', '물건명', 'none')" />
+					
+					<th class="hideable-column"> 
+					<th th:replace="fragments :: column_link('seller', '판매자', 'tag')" />
+					</th>
+					
+					<th class="hideable-column">
+					<th th:replace="fragments :: column_link('location', '지역', 'tag')" />
+					</th>
+
+					<th class="hideable-column">
+					<th th:replace="fragments :: column_link('createdTime', '등록시간', 'tag')" />
+					</th>
+
+					<th></th>
+				</tr>								
+			</thead>
+			<tbody>
+				<tr th:each="product : ${listProducts}">
+					<td class="hideable-column">[[${product.id}]]</td>
+					<td>
+						<img th:src="@{${product.mainImagePath}}" style="width: 120px" class="img-fluid" />
+					</td>
+					<td>
+						<a class="link-detail"
+							th:href="@{'/p/' + ${product.id}}"
+							th:title="${product.name}">[[${product.name}]]</a>
+						
+					</td>
+					<td class="hideable-column">[[${product.seller.nickname}]]</td>
+					<td class="hideable-column">[[${product.location.name}]]</td>
+
+					<td class="hideable-column">[[${product.createdTime}]]</td>
+					<td>
+
+						&nbsp;<div th:replace="fragments :: edit('product', '/my-products/edit/' + ${product.id})" />
+
+
+						&nbsp; 
+						<div th:replace="fragments :: delete('product', ${product.id}, '/my-products/delete/' + ${product.id}, true)" />
+
+					</td>					
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+		
+	<div th:replace="modal_fragments :: confirm_modal" />
+	
+	<div class="modal fade" id="detailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments :: pagination('물건')"></div>
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/products}]]";
+	entityName = "product";
+
+	$(document).ready(function() {
+		handleDefaultDetailLinkClick();
+		
+		$("#dropdownLocation").on("change", function() {
+			$("#searchForm").submit();
+		});
+		
+	});
+</script>
+</body>
+</html>

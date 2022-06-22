@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 
 import com.onion.domain.Location;
 import com.onion.exception.LocationNotFoundException;
+import com.onion.exception.ProductNotFoundException;
 import com.onion.paging.PagingAndSortingHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -140,7 +141,7 @@ public class LocationService {
 			//하위 지역 레벨 별로 "--" 삽입 재귀 반복
 			for (Location subLocation : children) {
 				String name = "--" + subLocation.getName();
-				locationsUsedInForm.add(Location.copyIdAndName(subLocation.getId(), name));
+				locationsUsedInForm.add(Location.copyIdAndName(subLocation.getId(), name,true));
 				
 				listSubLocationsUsedInForm(locationsUsedInForm, subLocation, 1);
 			}
@@ -162,11 +163,28 @@ public class LocationService {
 			}
 			name += subLocation.getName();
 			
-			locationsUsedInForm.add(Location.copyIdAndName(subLocation.getId(), name));
+			locationsUsedInForm.add(Location.copyIdAndName(subLocation.getId(), name,true));
 			
 			listSubLocationsUsedInForm(locationsUsedInForm, subLocation, newSubLevel);
 		}		
-	}	
+	}
+
+	// 하위 지역 리스트 (부모 지역이 없는 지역)
+	public List<Location> listChildLocations() {
+		List<Location> childLocations = new ArrayList<>();
+
+		Iterable<Location> listAllLocations = repo.findAll();
+
+		for (Location location:listAllLocations){
+			if (location.getChildren().size()==0){
+				childLocations.add(location);
+			}
+		}
+
+		return childLocations;
+	}
+
+
 	
 	// 지역 GET by id
 	public Location get(Integer id) throws LocationNotFoundException {
@@ -236,4 +254,12 @@ public class LocationService {
 		repo.deleteById(id);
 	}
 
+
+    public Location getByName(String name) throws LocationNotFoundException {
+		try {
+			return repo.findByName(name);
+		} catch (NoSuchElementException ex) {
+			throw new LocationNotFoundException("해당 지역이름을 찾을 수 없습니다.");
+		}
+    }
 }

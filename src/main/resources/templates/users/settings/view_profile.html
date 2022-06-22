@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓', 'none')" />
+<body class="bg-light">
+<div th:replace="navigation :: menu"></div>
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
+            </div>
+            <div class="col-8">
+                <div class="row mt-3">
+                    <form th:object="${user}" style="width: 600px; margin: 0 auto">
+                        <input type="hidden" name="redirect" th:value="${param.redirect}" />
+                        <div th:if="${message != null}" class="alert alert-success text-center">
+                            [[${message}]]
+                        </div>
+                        <div class="border border-secondary rounded p-3">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">로그인 방식:</label>
+                                <div class="col-sm-8">
+                                    [[${user.authenticationType}]]
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">이메일:</label>
+                                <div class="col-sm-8">
+                                    [[${user.email}]]
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">자기소개:</label>
+                                <div th:if="${#strings.isEmpty(user.bio)}" class="col-sm-8">
+                                    아직 자기소개가 입력되지 않았습니다.
+                                </div>
+                                <div class="col-sm-8">
+                                    [[${user.bio}]]
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">닉네임:</label>
+                                <div class="col-sm-8">
+                                    [[${user.nickname}]]
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">나의 거래가능 지역<br/></label>
+                                <div class="col-sm-8">
+                                    <div class="form-control" style="resize: vertical; height: 50px">
+                                        <th:block th:each="cat : ${listLocations}">
+                                            <option th:value="${cat.id}">[[${cat.name}]]</option>
+                                        </th:block>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">나의 매너점수:</label>
+                                <div class="col-sm-8">
+                                    [[${user.mannerPoint}]] 점
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">가입날짜:</label>
+                                <div class="col-sm-8">
+                                    <span th:text="${#temporals.format(user.joinedAt, 'yyyy년 M월 dd일 가입')}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

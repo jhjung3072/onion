@@ -2,23 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments :: page_head('오이 마켓', 'none')" />
 <body>
-<div class="container-fluid text-center">
+<div class="bg-light text-center">
 	<div th:replace="navigation :: menu"></div>
-	<div>
+	<div style="margin-top: 40px">
 		<h2>로그인</h2>
 	</div>
 
 	<div class="mt-3">
-		<a class="btn btn-lg btn-secondary fab fa-google" th:href="@{/oauth2/authorization/google}">&nbsp;&nbsp;구글 로그인</a>
-	</div>
-
-	<div class="mt-3">
-		<a class="btn btn-lg btn-secondary fab fa-facebook" th:href="@{/oauth2/authorization/facebook}">&nbsp;&nbsp;페이스북 로그인</a>
+		<a class="btn btn-lg btn-secondary fab fa-google" style="margin-top: 20px" th:href="@{/oauth2/authorization/google}">&nbsp;&nbsp;구글 로그인</a>
 	</div>
 
 	<div>&nbsp;</div>
 
-	<form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto">
+	<form th:action="@{/login}" method="post" style="max-width: 370px; margin: 0 auto">
 		<div th:if="${param.error}">
 			<p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
 		</div>

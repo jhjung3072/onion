@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,10 +47,11 @@ public class Location  {
 		return copyLocation;
 	}
 
-	public static Location copyIdAndName(Integer id, String name) {
+	public static Location copyIdAndName(Integer id, String name, boolean hasChildren) {
 		Location copyLocation = new Location();
 		copyLocation.setId(id);
 		copyLocation.setName(name);
+		copyLocation.setHasChildren(true);
 
 		return copyLocation;
 	}

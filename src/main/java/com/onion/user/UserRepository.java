@@ -15,6 +15,9 @@ public interface UserRepository extends SearchRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.email = ?1")
     User findByEmail(String email);
 
+    @Query("SELECT u FROM User u WHERE u.nickname = ?1")
+    User findByNickname(String nickname);
+
     boolean existsByEmail(String email);
 
     boolean existsByNickname(String nickname);
@@ -33,4 +36,8 @@ public interface UserRepository extends SearchRepository<User, Integer> {
     @Query("UPDATE User u SET u.enabled = ?2 WHERE u.id = ?1")
     @Modifying
     void updateEnabledStatus(Integer id, boolean enabled);
+
+    @Query("UPDATE User u SET u.productPostedByWeb = ?2 where u.id=?1")
+    @Modifying
+    void updateNotificationStatus(Integer id, boolean enabled);
 }

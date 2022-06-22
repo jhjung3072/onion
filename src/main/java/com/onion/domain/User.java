@@ -1,5 +1,6 @@
 package com.onion.domain;
 
+import com.onion.domain.product.Product;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.util.*;
 @Table(name = "users")
 public class User {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)
@@ -36,6 +37,8 @@ public class User {
     private String bio;
 
     private boolean productPostedByWeb = true;
+
+    private Integer mannerPoint=0;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "authentication_type", length = 10)
@@ -79,13 +82,14 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(
             name = "users_locations",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id")
     )
-    private Set<Location> locations = new HashSet<>();
+    private Location location;
+
 
     public void addRole(Role role) {
         this.roles.add(role);

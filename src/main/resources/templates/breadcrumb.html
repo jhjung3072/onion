@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+	<div th:if="${product.location != null}">
+		<div class="row">
+			<div class="col">
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a th:href="@{/}">Home</a>
+						</li>
+
+						<li class="breadcrumb-item">
+							<a th:href="@{'/products/page/1?sortField=name&sortDir=asc&locationId=' + ${product.location.id}}">[[${product.location.name}]]</a>
+						</li>
+
+						<li class="breadcrumb-item" th:if="${product != null}">
+							<span>[[${product.name}]]</span>
+						</li>
+						
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

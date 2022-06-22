@@ -23,13 +23,13 @@
 </head>
 <body>
 
-<div th:fragment="footer" class="text-center m-3">
+<div th:fragment="footer" class="text-center">
     <p>2022 정재호의 포토폴리오용 웹사이트입니다.</p>
 </div>
 
 <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
     <a class="text-white"
-       th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+       th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${locationId != null ? '&locationId=' + locationId : ''} + ${keyword != null ? '&keyword=' + keyword : ''} }">
         [[${columnLabel}]]
     </a>
     <span th:if="${sortField == fieldName}"
@@ -38,7 +38,7 @@
 
 <a th:fragment="page_link(pageNum, label)"
    class="page-link"
-   th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${label}]]</a>
+   th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${locationId != null ? '&locationId=' + locationId : ''}}">[[${label}]]</a>
 
 <div th:fragment="user_photos" th:remove="tag">
     <span th:if="${user.photos == null}" class="fas fa-portrait fa-3x icon-silver"></span>
@@ -147,17 +147,39 @@
         [[${message}]]
     </div>
 </div>
-
-<div th:fragment="format_currency(amount)" th:remove="tag">
-    <span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>[[${#numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+<div th:fragment="settings-menu (currentMenu)" class="list-group">
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/user_details}">프로필</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'update'}? active" href="#" th:href="@{/user_update}">계정정보변경</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'notification'}? active" href="#" th:href="@{/notification}">알림</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" href="#" th:href="@{/settings/location}">활동 지역</a>
 </div>
 
-<div th:fragment="format_time(dateTime)" th:remove="tag">
-    <span th:text="${#dates.format(dateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-</div>
-
-<div th:fragment="currency_input(amount)" th:remove="tag">
-    <input type="text" readonly class="form-control" th:value="${(CURRENCY_SYMBOL_POSITION == 'Before price' ? CURRENCY_SYMBOL : '') + #numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION == 'After price' ? CURRENCY_SYMBOL : '')}">
+<div th:fragment="product-list (listProducts)" class="col-sm-12">
+    <div class="row">
+        <div class="col-md-4" th:each="product: ${listProducts}">
+            <div class="card mb-4 shadow-sm">
+                <img th:src="${product.mainImagePath}" class="card-img-top" th:alt="${product.name}" >
+                <div class="card-body">
+                    <a th:href="@{'/p/' + ${product.id}}" class="text-decoration-none">
+                        <h5 class="card-title context" th:text="${product.name}"></h5>
+                    </a>
+                    <p class="card-text" th:utext="${product.shortDescription}">Short description</p>
+                    <p class="card-text context">
+                                <span th:each="cat: ${product.location}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <a th:href="@{'/products/page/1?sortField=createdTime&sortDir=asc&locationId='+ ${cat.id}}"  style="text-decoration: none; color: inherit;">[[${product.location.name}]]</a>
+                                    </a>
+                                </span>
+                        <span class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-user"></i> <a th:href="@{'/seller_details/'+ ${product.seller.id}}"  style="text-decoration: none; color: inherit;">[[${product.seller.nickname}]]</a>
+                                    </a>
+                                </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

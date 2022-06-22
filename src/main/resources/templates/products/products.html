@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('오이마켓', 'none')" />
+<body>
+<div class="bg-light">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>우리 동네 물건</h2>
+		
+	</div>
+		
+	<div>
+		<form th:action="@{/products/page/1}" class="form-inline m-3" id="searchForm">
+			<input type="hidden" name="sortField" th:value="${sortField}" />
+			<input type="hidden" name="sortDir" th:value="${sortDir}" />
+			
+			지역:&nbsp;
+			<select class="form-control" name="locationId" id="dropdownLocation">
+				<option value="0">모든 지역</option>
+				
+				<th:block th:each="cat : ${listLocations}">
+				<option th:value="${cat.id}" th:selected="(${locationId} == ${cat.id})">[[${cat.name}]]</option>
+				</th:block>
+			</select>
+			
+			&nbsp;검색어:&nbsp;
+			<input type="search" name="keyword" th:value="${keyword}" class="form-control"/>
+			&nbsp;&nbsp;
+			<button type="submit" class="btn btn-primary">
+				<i class="fas fa-search"></i>
+			</button>
+			&nbsp;&nbsp;
+			<button type="button" class="btn btn-secondary" onclick="clearFilter()">
+				<i class="fas fa-eraser"></i>
+			</button>
+		</form>
+		
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>		
+	</div>
+	
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-dark">
+				<tr>
+					<th class="hideable-column"> 
+					<th th:replace="fragments :: column_link('id', 'ID', 'tag')" />
+					</th>
+					
+					<th>메인 이미지</th>
+					<th th:replace="fragments :: column_link('name', '물건명', 'none')" />
+					
+					<th class="hideable-column"> 
+					<th th:replace="fragments :: column_link('seller', '판매자', 'tag')" />
+					</th>
+					
+					<th class="hideable-column">
+					<th th:replace="fragments :: column_link('location', '지역', 'tag')" />
+					</th>
+
+					<th class="hideable-column">
+					<th th:replace="fragments :: column_link('createdTime', '등록시간', 'tag')" />
+					</th>
+
+
+				</tr>								
+			</thead>
+			<tbody>
+				<tr th:each="product : ${listProducts}">
+					<td class="hideable-column">[[${product.id}]]</td>
+					<td>
+						<img th:src="@{${product.mainImagePath}}" style="width: 120px" class="img-fluid" />
+					</td>
+					<td>
+						<a class="link-detail"
+							th:href="@{'/p/' + ${product.id}}"
+							th:title="${product.name}">[[${product.name}]]</a>
+						
+					</td>
+					<td class="hideable-column">[[${product.seller.nickname}]]</td>
+					<td class="hideable-column">[[${product.location.name}]]</td>
+					<td class="hideable-column">[[${product.createdTime}]]</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+		
+	<div th:replace="modal_fragments :: confirm_modal" />
+	
+	<div class="modal fade" id="detailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+	
+	<div th:replace="fragments :: pagination('물건')"></div>
+	
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/products}]]";
+	entityName = "product";
+	$(document).ready(function() {
+		handleDefaultDetailLinkClick();
+		
+		$("#dropdownLocation").on("change", function() {
+			$("#searchForm").submit();
+		});
+		
+	});
+</script>
+</body>
+</html>

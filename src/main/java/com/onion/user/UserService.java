@@ -11,12 +11,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -142,5 +145,43 @@ public class UserService {
     public void completeSignUp(User newUser) {
         newUser.completeSignUp();
     }
+
+    public List<User> listAll() {
+        return (List<User>) userRepository.findAll(Sort.by("id").ascending());
+    }
+
+    // 이메일로 회원 객체 리턴
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void update(User userInForm) {
+        User userInDB = userRepository.findById(userInForm.getId()).get();
+
+        // 회원 유형이 db 타입이고
+        if (userInDB.getAuthenticationType().equals(AuthenticationType.DATABASE)) {
+            if (!userInForm.getPassword().isEmpty()) { // 폼에 패스워드가 채워져있으면 패스워드 암호화 후 저장
+                String encodedPassword = passwordEncoder.encode(userInForm.getPassword());
+                userInForm.setPassword(encodedPassword);
+            } else { // 폼에 패스워드가 채워져있지 않으면 기존의 패스워드 사용
+                userInForm.setPassword(userInDB.getPassword());
+            }
+        } else { // 회원 유형이 소셜 회원이면 패스워드 그대로 사용
+            userInForm.setPassword(userInDB.getPassword());
+        }
+
+        userInForm.setEnabled(userInDB.isEnabled());
+        userInForm.setJoinedAt(userInDB.getJoinedAt());
+        userInForm.setEmailCheckToken(userInDB.getEmailCheckToken());
+        userInForm.setAuthenticationType(userInDB.getAuthenticationType());
+        userInForm.setResetPasswordToken(userInDB.getResetPasswordToken());
+
+        userRepository.save(userInForm);
+    }
+
+    public void updateNotificationStatus(User user, boolean enabled){
+        userRepository.updateNotificationStatus(user.getId(), enabled);
+    }
+
 
 }

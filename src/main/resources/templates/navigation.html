@@ -8,7 +8,15 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
+
+
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/}" style="color: #FFFFFF; font-weight: bold; font-size: 40px">오이마켓</a>
+				</li>
+			</ul>
+
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
 					<form th:action="@{/search/product}" class="form-inline" method="get">
@@ -16,6 +24,7 @@
 					</form>
 				</li>
 			</ul>
+
 
 			<ul class="navbar-nav justify-content-end">
 				<li class="nav-item" sec:authorize="!isAuthenticated()">
@@ -37,11 +46,12 @@
 						<h6 class="dropdown-header">
 							<span sec:authentication="principal.user.nickname">닉네임</span>
 						</h6>
-						<a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-						<a class="dropdown-item" >거래내역</a>
+						<a class="dropdown-item" th:href="@{/user_details}" >프로필</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#" th:href="@{'/locations'}">지역설정</a>
 						<a class="dropdown-item" href="#" th:href="@{'/users'}">유저관리</a>
+						<a class="dropdown-item" href="#" th:href="@{'/my-products/new'}">내 물건 팔기</a>
+						<a class="dropdown-item" href="#" th:href="@{'/my-products'}">내 물건 목록</a>
 						<form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
 							<button class="dropdown-item" type="submit">로그아웃</button>
 						</form>
