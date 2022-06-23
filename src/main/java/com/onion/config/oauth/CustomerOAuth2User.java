@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 // 소셜 로그인 유저 매핑
 public class CustomerOAuth2User implements OAuth2User {
 	private String clientName;
-	private String fullName;
+	private String nickname;
 	private OAuth2User oauth2User;
 	
 	public CustomerOAuth2User(OAuth2User user, String clientName) {
@@ -36,15 +36,15 @@ public class CustomerOAuth2User implements OAuth2User {
 		return oauth2User.getAttribute("email");
 	}
 
-	public String getFullName() {
-		return fullName != null ? fullName : oauth2User.getAttribute("name");
+	public String getNickname() {
+		return nickname != null ? nickname : oauth2User.getAttribute("name");
 	}
 
 	public String getClientName() {
 		return clientName;
 	}
 	
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 }

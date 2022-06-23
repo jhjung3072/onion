@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 // 로그인한 회원의 이메일을 이용하여 회원 객체 리턴
 @Component
 public class ControllerHelper {
-	@Autowired private UserService customerService;
+	@Autowired private UserService userService;
 	
 	public User getAuthenticatedUser(HttpServletRequest request) {
 		String email = Utility.getEmailOfAuthenticatedCustomer(request);
-		return customerService.getUserByEmail(email);
+		return userService.getUserByEmail(email);
 	}		
 }

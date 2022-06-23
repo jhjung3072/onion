@@ -253,8 +253,8 @@ public class UserController {
         } else if (principal instanceof OAuth2AuthenticationToken) { // 소셜 로그인일 경우 회원 이메일 리턴
             OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) principal;
             CustomerOAuth2User oauth2User = (CustomerOAuth2User) oauth2Token.getPrincipal();
-            String fullName = user.getNickname();
-            oauth2User.setFullName(fullName);
+            String nickname = user.getNickname();
+            oauth2User.setNickname(nickname);
         }
     }
 

@@ -1,9 +1,13 @@
 package com.onion.config;
 
+import com.onion.config.oauth.CustomerOAuth2UserService;
+import com.onion.config.oauth.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,7 +26,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -31,7 +34,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new OnionUserDetailsService();
 	}
 
-	private final DataSource dataSource;
+	@Autowired private DataSource dataSource;
+	@Autowired private CustomerOAuth2UserService oAuth2UserService;
+	@Autowired private DatabaseLoginSuccessHandler databaseLoginHandler;
+
+	private final OAuth2LoginSuccessHandler oauth2LoginHandler;
+
+	public WebSecurityConfig(@Lazy OAuth2LoginSuccessHandler oauth2LoginHandler){
+		this.oauth2LoginHandler=oauth2LoginHandler;
+	}
+
+
 
 	// PasswordEncoder를 선언할때 자동으로 클래스가 바인딩
 	@Bean
@@ -60,7 +73,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.formLogin()
 					.loginPage("/login")
+					.successHandler(databaseLoginHandler)
 					.permitAll()
+				.and()
+				.oauth2Login()
+					.loginPage("/login")
+					.userInfoEndpoint()
+					.userService(oAuth2UserService)
+					.and()
+					.successHandler(oauth2LoginHandler)
 				.and()
 				.logout()
 					.permitAll()

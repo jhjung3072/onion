@@ -5,6 +5,8 @@ import com.onion.domain.User;
 import com.onion.domain.product.Product;
 import com.onion.location.LocationService;
 import com.onion.product.ProductService;
+import com.onion.user.RoleRepository;
+import com.onion.user.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -23,6 +25,7 @@ public class MainController {
     @Autowired private ProductService productService;
     @Autowired private LocationService locationService;
     @Autowired private ControllerHelper controllerHelper;
+    @Autowired private RoleRepository roleRepository;
 
     // 인증받지 않은 사용자(비로그인 사용자)일 경우에 로그인 페이지 GET
     @GetMapping("/login")
@@ -38,16 +41,16 @@ public class MainController {
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request){
         User user = controllerHelper.getAuthenticatedUser(request);
-        if(user==null){
+        if(user==null || user.getRoles().contains(roleRepository.findById(1))){
             Page<Product> listProductsForAll=productService.list9RecentlyRegisteredProductForAll();
             model.addAttribute("listProducts", listProductsForAll);
             return "index";
 
+        }else{
+            Page<Product> listProductsForUser=productService.list9RecentlyRegisteredProductForUser(user);
+            model.addAttribute("listProducts", listProductsForUser);
+            return "index-after-login";
         }
 
-
-        Page<Product> listProductsForUser=productService.list9RecentlyRegisteredProductForUser(user);
-        model.addAttribute("listProducts", listProductsForUser);
-        return "index-after-login";
     }
 }

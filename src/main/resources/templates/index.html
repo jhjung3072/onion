@@ -10,7 +10,7 @@
 		<p class="lead text-muted">
 			지역 기반으로 중고 물건을 찾아보세요!<br/>
 		</p>
-		<p>
+		<p sec:authorize="!isAuthenticated()">
 			<a th:href="@{/register}" class="btn btn-primary my-2">회원 가입</a>
 			<a th:href="@{/login}" class="btn btn-primary my-2">로그인</a>
 		</p>

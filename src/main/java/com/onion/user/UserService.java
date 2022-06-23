@@ -5,7 +5,9 @@ import com.onion.config.mail.EmailMessage;
 import com.onion.config.mail.EmailService;
 import com.onion.domain.AuthenticationType;
 import com.onion.domain.User;
+import com.onion.exception.LocationNotFoundException;
 import com.onion.exception.UserNotFoundException;
+import com.onion.location.LocationService;
 import com.onion.paging.PagingAndSortingHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,6 +41,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final LocationService locationService;
 
 
     public void listByPage(int pageNum, PagingAndSortingHelper helper) {
@@ -179,9 +183,28 @@ public class UserService {
         userRepository.save(userInForm);
     }
 
-    public void updateNotificationStatus(User user, boolean enabled){
+    public void updateNotificationStatus(User user, boolean enabled) {
         userRepository.updateNotificationStatus(user.getId(), enabled);
     }
 
 
+    public void addNewUserUponOAuthLogin(String name, String email, AuthenticationType authenticationType) throws LocationNotFoundException {
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setNickname(name);
+
+        newUser.setEnabled(true);
+        newUser.setJoinedAt(LocalDateTime.now());
+        newUser.setAuthenticationType(authenticationType);
+        newUser.setPassword("");
+        newUser.setLocation(locationService.get(2));
+        newUser.addRole(roleService.findByName("ROLE_USER"));
+        userRepository.save(newUser);
+    }
+
+    public void updateAuthenticationType(User user, AuthenticationType type) {
+        if (!user.getAuthenticationType().equals(type)) {
+            userRepository.updateAuthenticationType(user.getId(), type);
+        }
+    }
 }

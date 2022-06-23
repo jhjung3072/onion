@@ -44,14 +44,20 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
 						<h6 class="dropdown-header">
-							<span sec:authentication="principal.user.nickname">닉네임</span>
+							<span sec:authentication="principal.Nickname">닉네임</span>
 						</h6>
 						<a class="dropdown-item" th:href="@{/user_details}" >프로필</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#" th:href="@{'/locations'}">지역설정</a>
-						<a class="dropdown-item" href="#" th:href="@{'/users'}">유저관리</a>
+						<th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+							<a class="dropdown-item" href="#" th:href="@{'/locations'}">지역관리</a>
+							<a class="dropdown-item" href="#" th:href="@{'/users'}">유저관리</a>
+							<a class="dropdown-item" href="#" th:href="@{'/products'}">물건관리</a>
+						</th:block>
+						<th:block sec:authorize="hasAuthority('ROLE_USER')">
 						<a class="dropdown-item" href="#" th:href="@{'/my-products/new'}">내 물건 팔기</a>
 						<a class="dropdown-item" href="#" th:href="@{'/my-products'}">내 물건 목록</a>
+						</th:block>
+						<div class="dropdown-divider"></div>
 						<form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
 							<button class="dropdown-item" type="submit">로그아웃</button>
 						</form>

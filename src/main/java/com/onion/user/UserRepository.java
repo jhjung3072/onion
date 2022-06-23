@@ -1,5 +1,6 @@
 package com.onion.user;
 
+import com.onion.domain.AuthenticationType;
 import com.onion.domain.User;
 import com.onion.paging.SearchRepository;
 import org.springframework.data.domain.Page;
@@ -40,4 +41,8 @@ public interface UserRepository extends SearchRepository<User, Integer> {
     @Query("UPDATE User u SET u.productPostedByWeb = ?2 where u.id=?1")
     @Modifying
     void updateNotificationStatus(Integer id, boolean enabled);
+
+    @Query("UPDATE User u SET u.authenticationType = ?2 WHERE u.id = ?1")
+    @Modifying
+    void updateAuthenticationType(Integer userId, AuthenticationType type);
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.onion.domain.AuthenticationType;
 import com.onion.domain.User;
+import com.onion.exception.LocationNotFoundException;
 import com.onion.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,16 +28,20 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		
 		String name = oauth2User.getName();
 		String email = oauth2User.getEmail();
-		String countryCode = request.getLocale().getCountry();
 		String clientName = oauth2User.getClientName();
 		
 		AuthenticationType authenticationType = getAuthenticationType(clientName);
 		
 		User user = userService.getUserByEmail(email);
 		if (user == null) { // 회원가입이 안된 새로운 회원일 경우
-
+			try {
+				userService.addNewUserUponOAuthLogin(name, email, authenticationType);
+			} catch (LocationNotFoundException e) {
+				throw new RuntimeException(e);
+			}
 		} else { // 이미 회원 가입을 했지만 소셜 로그인을 한 경우
-
+			oauth2User.setNickname(user.getNickname());
+			userService.updateAuthenticationType(user, authenticationType);
 		}
 		
 		super.onAuthenticationSuccess(request, response, authentication);

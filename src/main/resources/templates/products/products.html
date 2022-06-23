@@ -64,6 +64,9 @@
 					<th th:replace="fragments :: column_link('createdTime', '등록시간', 'tag')" />
 					</th>
 
+					<th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+						<th></th>
+					</th:block>
 
 				</tr>								
 			</thead>
@@ -82,6 +85,15 @@
 					<td class="hideable-column">[[${product.seller.nickname}]]</td>
 					<td class="hideable-column">[[${product.location.name}]]</td>
 					<td class="hideable-column">[[${product.createdTime}]]</td>
+
+					<th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+					<td>
+						&nbsp;<div th:replace="fragments :: edit('product', '/my-products/edit/' + ${product.id})" />
+						&nbsp;
+						<div th:replace="fragments :: delete('product', ${product.id}, '/my-products/delete/' + ${product.id}, true)" />
+					</td>
+					</th:block>
+
 
 				</tr>
 			</tbody>
