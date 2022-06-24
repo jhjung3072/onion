@@ -94,11 +94,12 @@ public class ProductService {
 	// 물건 삭제
 	public void delete(Integer id) throws ProductNotFoundException {
 		Long countById = repo.countById(id);
-		
+		Product product = repo.findById(id).get();
+
 		if (countById == null || countById == 0) {
-			throw new ProductNotFoundException("해당 물건ID를 찾을 수 없습니다.");			
+			throw new ProductNotFoundException("해당 물건ID를 찾을 수 없습니다.");
 		}
-		
+
 		repo.deleteById(id);
 	}	
 	
@@ -134,5 +135,10 @@ public class ProductService {
 
 		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
 		return repo.findBySeller(user.getId(), pageable);
+    }
+
+    public Page<Product> search(String keyword, int pageNum) {
+		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE);
+		return repo.search(keyword, pageable);
     }
 }

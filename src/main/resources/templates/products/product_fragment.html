@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" class="col-sm-2" style="margin-left: 80px">
+	<div>
+		<a th:href="@{${product.URI}}">
+			<img th:src="@{${product.mainImagePath}}" width="150" />
+			<br/>
+			<b>[[${product.name}]]</b>
+		</a>
+	</div>
+	<div>
+		<table>
+			<tr>
+				<td>
+					<span>판매자: [[${product.seller.nickname}]]</span>
+				</td>
+			</tr>
+			<tr>
+				<span>거래지역: [[${product.location.name}]]</span>
+			</tr>
+		</table>
+	</div>
+	<span th:utext="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></span> 원
+</div>
+
+</body>
+</html>

@@ -19,7 +19,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	@Query("SELECT p FROM Product p WHERE p.seller.enabled=true")
 	Page<Product>findAll(Pageable pageable);
 
-	// 물건 키워드 검색 (이름, 설명, 유저 닉네임, 지역 이름)
+	// 물건 키워드 검색 (이름, 설명, 유저 닉네임, 지역 이름) by 관리자
 	@Query("SELECT p FROM Product p WHERE (p.name LIKE %?1% "
 			+ "OR p.fullDescription LIKE %?1% "
 			+ "OR p.seller.nickname LIKE %?1% "
@@ -53,4 +53,12 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
 	@Query("SELECT p FROM Product p WHERE p.seller.id = ?1")
     Page<Product> findBySeller(Integer id, Pageable pageable);
+
+	// 검색 성능 개선을 위해 FULLTEXT INDEX 사용
+	// JPA에서 MATCH AGAINST 사용 불가능, nativeQuery 사용
+	// 참고 : https://geek-techiela.blogspot.com/2016/02/springboot-jpa-fulltextsearchnativequer.html
+	@Query("SELECT p FROM Product p WHERE (p.name LIKE %?1% "
+			+ "OR p.shortDescription LIKE %?1% "
+			+ "OR p.seller.nickname LIKE %?1% ) AND p.seller.enabled=true")
+	Page<Product> search(String keyword, Pageable pageable);
 }

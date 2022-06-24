@@ -23,8 +23,9 @@ public interface UserRepository extends SearchRepository<User, Integer> {
 
     boolean existsByNickname(String nickname);
 
-    //유저 검색
-    @Query("SELECT u FROM User u WHERE u.email LIKE %?1%")
+    
+    // 유저 키워드 검색(id, 이메일, 닉네임) by 관리자
+    @Query("SELECT u FROM User u WHERE CONCAT(u.id, u.email, u.nickname) LIKE %?1%")
     Page<User> findAll(String keyword, Pageable pageable);
 
     // 유저 id와 이름만 반환하기 위해 new사용
@@ -33,15 +34,17 @@ public interface UserRepository extends SearchRepository<User, Integer> {
 
     Integer countById(Integer id);
 
-    // 유저 활성화 업데이트
+    // 유저 활성화 업데이트 by 관리자
     @Query("UPDATE User u SET u.enabled = ?2 WHERE u.id = ?1")
     @Modifying
     void updateEnabledStatus(Integer id, boolean enabled);
 
+    // 알림 상태 변경 by 유저
     @Query("UPDATE User u SET u.productPostedByWeb = ?2 where u.id=?1")
     @Modifying
     void updateNotificationStatus(Integer id, boolean enabled);
 
+    // 유저의 인증상태(로그인방법)업데이트
     @Query("UPDATE User u SET u.authenticationType = ?2 WHERE u.id = ?1")
     @Modifying
     void updateAuthenticationType(Integer userId, AuthenticationType type);

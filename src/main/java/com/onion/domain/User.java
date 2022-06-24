@@ -8,11 +8,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @EqualsAndHashCode(of = "id")
-@AllArgsConstructor
-@Builder
+@AllArgsConstructor @Builder
 @Table(name = "users")
 public class User {
 
@@ -89,6 +87,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "location_id")
     )
     private Location location;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Watchlist> watchlist=new HashSet<>();
 
 
     public void addRole(Role role) {

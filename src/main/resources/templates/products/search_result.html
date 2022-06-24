@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+<body>
+<div class="bg-light">
+	<div th:replace="navigation :: menu"></div>
+	
+	<div th:if="${totalItems > 0}"  style="margin-bottom: 80px">
+		<h2 style="text-align: center;">'[[${keyword}]]' 검색 결과입니다.</h2>
+	</div>
+	<div th:unless="${totalItems > 0}" style="margin-bottom: 80px">
+		<h3 style="text-align: center;">'[[${keyword}]]' 검색 결과가 없습니다.</h3>
+	</div>
+		
+	<div class="row">
+		<th:block th:each="product : ${listResult}">
+			<div th:replace="products/product_fragment :: content"></div>
+		</th:block>
+	</div>
+	
+	<div th:replace="fragments :: paginationWithModulURL('/search', '물건')"></div>
+	
+	<div th:replace="fragments :: footer"></div>
+</div>
+</body>
+</html>

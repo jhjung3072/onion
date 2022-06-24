@@ -19,8 +19,8 @@
 
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
-					<form th:action="@{/search/product}" class="form-inline" method="get">
-						<input class="form-control mr-sm-2" name="keyword" type="search" placeholder="물건 찾기" aria-label="Search" />
+					<form th:action="@{/search}" class="form-inline" method="get">
+						<input class="form-control mr-sm-2" name="keyword"  th:value="${searchKeyword}" type="search" placeholder="물건 찾기" aria-label="Search" />
 					</form>
 				</li>
 			</ul>
@@ -49,13 +49,14 @@
 						<a class="dropdown-item" th:href="@{/user_details}" >프로필</a>
 						<div class="dropdown-divider"></div>
 						<th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
-							<a class="dropdown-item" href="#" th:href="@{'/locations'}">지역관리</a>
-							<a class="dropdown-item" href="#" th:href="@{'/users'}">유저관리</a>
-							<a class="dropdown-item" href="#" th:href="@{'/products'}">물건관리</a>
+							<a class="dropdown-item" href="#" th:href="@{'/locations'}">지역 관리</a>
+							<a class="dropdown-item" href="#" th:href="@{'/users'}">유저 관리</a>
+							<a class="dropdown-item" href="#" th:href="@{'/products'}">물건 관리</a>
 						</th:block>
 						<th:block sec:authorize="hasAuthority('ROLE_USER')">
 						<a class="dropdown-item" href="#" th:href="@{'/my-products/new'}">내 물건 팔기</a>
 						<a class="dropdown-item" href="#" th:href="@{'/my-products'}">내 물건 목록</a>
+						<a class="dropdown-item" href="#" th:href="@{'/watchlist'}">내 관심 목록 </a>
 						</th:block>
 						<div class="dropdown-divider"></div>
 						<form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">

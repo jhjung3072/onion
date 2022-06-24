@@ -57,15 +57,6 @@ public class ProductControllerTests {
 		newUser.setLocation(locationRepository.findById(5).get());
 		userService.registerUser(newUser);
 
-		Product newProduct=new Product();
-		newProduct.setName("테스트물건");
-		newProduct.setPrice(100);
-		newProduct.setShortDescription("테스트 짧은 설명");
-		newProduct.setMainImage("main image.jpg");
-		newProduct.setFullDescription("테스트 긴 설명");
-		newProduct.setLocation(newUser.getLocation());
-		productService.save(newProduct,newUser);
-
 	}
 
 	@AfterEach
@@ -132,8 +123,8 @@ public class ProductControllerTests {
 		Product newProduct=new Product();
 		newProduct.setName("테스트물건");
 		newProduct.setPrice(100);
+		newProduct.setMainImage("abc.jpg");
 		newProduct.setShortDescription("테스트 짧은 설명");
-		newProduct.setMainImage("main image.jpg");
 		newProduct.setFullDescription("테스트 긴 설명");
 		newProduct.setLocation(newUser.getLocation());
 		Product savedProduct = productService.save(newProduct, newUser);

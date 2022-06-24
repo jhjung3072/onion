@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<div th:fragment="footer" class="text-center">
+<div th:fragment="footer" class="text-center" style="margin-top: 200px">
     <p>2022 정재호의 포토폴리오용 웹사이트입니다.</p>
 </div>
 
@@ -101,6 +101,41 @@
 
                 <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
                     <a th:replace="fragments :: page_link(${totalPages}, '끝')"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div th:fragment="paginationWithModulURL(moduleURL, entityName)" th:remove="tag">
+    <div class="text-center m-1" th:if="${totalItems > 0}">
+        <span>[[${entityName}]]  [[${startCount}]] ~ [[${endCount}]] of [[${totalItems}]]</span>
+    </div>
+    <div class="text-center m-1" th:unless="${totalItems > 0}">
+        <span>[[${entityName}]]을 찾을 수 없습니다.</span>
+    </div>
+
+    <div th:if="${totalPages > 1}">
+        <nav>
+            <ul class="pagination justify-content-center flex-wrap">
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments :: page_link(${moduleURL}, 1, '처음')"></a>
+                </li>
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${currentPage - 1}, '이전')"></a>
+                </li>
+
+                <li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
+                    th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${i}, ${i})"></a>
+                </li>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${currentPage + 1}, '다음')"></a>
+                </li>
+
+                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${totalPages}, '마지막')"></a>
                 </li>
             </ul>
         </nav>

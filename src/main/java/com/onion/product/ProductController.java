@@ -160,14 +160,15 @@ public class ProductController {
 	public String deleteProduct(@PathVariable(name = "id") Integer id,
 			Model model, RedirectAttributes redirectAttributes) {
 		try {
-			productService.delete(id);
-			// 물건에 해당하는 메인 이미지와 보조이미지 삭제
+
 			String productExtraImagesDir = "../product-images/" + id + "/extras";
 			String productImagesDir = "../product-images/" + id;
 
 			FileUploadUtil.removeDir(productExtraImagesDir);
 			FileUploadUtil.removeDir(productImagesDir);
 
+			productService.delete(id);
+			// 물건에 해당하는 메인 이미지와 보조이미지 삭제
 			redirectAttributes.addFlashAttribute("message",
 					"물건 ID: " + id + "가 삭제되었습니다.");
 		} catch (ProductNotFoundException ex) {
@@ -225,6 +226,40 @@ public class ProductController {
 		} catch (ProductNotFoundException e) {
 			return "error/404";
 		}
+	}
+
+	// 물건 키워드 검색
+	@GetMapping("/search")
+	public String searchFirstPage(String keyword, Model model) {
+		return searchByPage(keyword, 1, model);
+	}
+
+	// 키워드 검색 페이징
+	@GetMapping("/search/page/{pageNum}")
+	public String searchByPage(String keyword,
+							   @PathVariable("pageNum") int pageNum,
+							   Model model) {
+		Page<Product> pageProducts = productService.search(keyword, pageNum);
+		List<Product> listResult = pageProducts.getContent();
+
+		long startCount = (pageNum - 1) * ProductService.PRODUCTS_PER_PAGE + 1;
+		long endCount = startCount + ProductService.PRODUCTS_PER_PAGE - 1;
+		if (endCount > pageProducts.getTotalElements()) {
+			endCount = pageProducts.getTotalElements();
+		}
+
+		model.addAttribute("currentPage", pageNum);
+		model.addAttribute("totalPages", pageProducts.getTotalPages());
+		model.addAttribute("startCount", startCount);
+		model.addAttribute("endCount", endCount);
+		model.addAttribute("totalItems", pageProducts.getTotalElements());
+		model.addAttribute("pageTitle", keyword + " - 검색 결과");
+
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchKeyword", keyword);
+		model.addAttribute("listResult", listResult);
+
+		return "products/search_result";
 	}
 
 }

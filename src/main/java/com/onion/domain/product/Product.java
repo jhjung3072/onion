@@ -2,6 +2,7 @@ package com.onion.domain.product;
 
 import com.onion.domain.Location;
 import com.onion.domain.User;
+import com.onion.domain.Watchlist;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -55,12 +56,20 @@ public class Product {
 	private User seller;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Watchlist> watchlist=new HashSet<>();
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ProductImage> images = new HashSet<>();
 
+    public Product(Integer id) {
+		this.id = id;
+    }
 
-	public void addExtraImage(String imageName) {
+
+    public void addExtraImage(String imageName) {
 		this.images.add(new ProductImage(imageName, this));
 	}
+
 
 	@Transient
 	public String getMainImagePath() {
