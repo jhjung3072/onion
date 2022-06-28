@@ -1,9 +1,12 @@
 package com.onion.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onion.config.OnionUserDetails;
 import com.onion.config.Utility;
 import com.onion.config.oauth.CustomerOAuth2User;
 import com.onion.domain.Location;
+import com.onion.domain.Tag;
 import com.onion.domain.User;
 import com.onion.exception.UserNotFoundException;
 import com.onion.location.LocationRepository;
@@ -11,17 +14,19 @@ import com.onion.location.LocationService;
 import com.onion.paging.PagingAndSortingHelper;
 import com.onion.paging.PagingAndSortingParam;
 
+import com.onion.tag.TagForm;
+import com.onion.tag.TagRepository;
+import com.onion.tag.TagService;
 import com.onion.user.exporter.UserExcelExporter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +36,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,7 +47,13 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    private final LocationRepository locationRepository;
+    private final TagRepository tagRepository;
+
+    private final TagService tagService;
+
+    private final ObjectMapper objectMapper;
+
+
 
     //유저 목록 GET
     @GetMapping("/users")
@@ -216,6 +228,7 @@ public class UserController {
         return "redirect:/user_details";
     }
 
+    // 알림설정 뷰
     @GetMapping("/notification")
     public String updateNotificationsForm(Model model, HttpServletRequest request) {
         String email = Utility.getEmailOfAuthenticatedCustomer(request);
@@ -237,6 +250,49 @@ public class UserController {
 
         return "redirect:/notification";
     }
+
+    // 태그 수정 뷰
+    @GetMapping("/tags")
+    public String updateTags(HttpServletRequest request, Model model) throws JsonProcessingException {
+        String email = Utility.getEmailOfAuthenticatedCustomer(request);
+        User user = userService.getUserByEmail(email);
+        model.addAttribute(user);
+
+        Set<Tag> tags = userService.getTags(user);
+        model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
+
+        List<String> allTags = tagRepository.findAll().stream().map(Tag::getTitle).collect(Collectors.toList());
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(allTags));
+
+        return "users/settings/tags";
+    }
+
+    @PostMapping("/tags/add")
+    @ResponseBody
+    public ResponseEntity addTag(HttpServletRequest request, @RequestBody TagForm tagForm) {
+        String email = Utility.getEmailOfAuthenticatedCustomer(request);
+        User user = userService.getUserByEmail(email);
+        Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
+        userService.addTag(user, tag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/tags/remove")
+    @ResponseBody
+    public ResponseEntity removeTag(HttpServletRequest request, @RequestBody TagForm tagForm) {
+        String email = Utility.getEmailOfAuthenticatedCustomer(request);
+        User user = userService.getUserByEmail(email);
+
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        userService.removeTag(user, tag);
+        return ResponseEntity.ok().build();
+    }
+
 
 
     // 인증된 회원 이름 수정, 가입 유형마다 방법 다름

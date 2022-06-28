@@ -7,10 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
-public interface UserRepository extends SearchRepository<User, Integer> {
+public interface UserRepository extends SearchRepository<User, Integer> , QuerydslPredicateExecutor<User> {
 
     // 이메일로 유저 찾기
     @Query("SELECT u FROM User u WHERE u.email = ?1")

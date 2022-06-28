@@ -10,6 +10,9 @@
                 <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
             </div>
             <div class="col-8">
+                <div class="row">
+                    <h2 class="col-12" style="text-align: center">내 정보</h2>
+                </div>
                 <div class="row mt-3">
                     <form th:object="${user}" style="width: 600px; margin: 0 auto">
                         <input type="hidden" name="redirect" th:value="${param.redirect}" />
@@ -48,9 +51,9 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">나의 거래가능 지역<br/></label>
+                                <label class="col-sm-4">나의 거래가능 지역<br/></label>
                                 <div class="col-sm-8">
-                                    <div class="form-control" style="resize: vertical; height: 50px">
+                                    <div style="resize: vertical">
                                         <th:block th:each="cat : ${listLocations}">
                                             <option th:value="${cat.id}">[[${cat.name}]]</option>
                                         </th:block>

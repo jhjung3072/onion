@@ -3,6 +3,7 @@ package com.onion.product;
 import com.onion.domain.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -61,4 +62,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 			+ "OR p.shortDescription LIKE %?1% "
 			+ "OR p.seller.nickname LIKE %?1% ) AND p.seller.enabled=true")
 	Page<Product> search(String keyword, Pageable pageable);
+
+	@EntityGraph(attributePaths = "tags")
+    Product findProductWithTagsById(Integer id);
+
+	@EntityGraph(attributePaths = {"tags", "location"})
+    Product findProductWithTagsAndLocationById(Integer id);
 }

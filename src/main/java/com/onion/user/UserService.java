@@ -4,6 +4,7 @@ import com.onion.config.Utility;
 import com.onion.config.mail.EmailMessage;
 import com.onion.config.mail.EmailService;
 import com.onion.domain.AuthenticationType;
+import com.onion.domain.Tag;
 import com.onion.domain.User;
 import com.onion.exception.LocationNotFoundException;
 import com.onion.exception.UserNotFoundException;
@@ -24,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -206,5 +209,20 @@ public class UserService {
         if (!user.getAuthenticationType().equals(type)) {
             userRepository.updateAuthenticationType(user.getId(), type);
         }
+    }
+
+    public Set<Tag> getTags(User user) {
+        Optional<User> byId = userRepository.findById(user.getId());
+        return byId.orElseThrow().getTags();
+    }
+
+    public void addTag(User user, Tag tag) {
+        Optional<User> byId = userRepository.findById(user.getId());
+        byId.ifPresent(a -> a.getTags().add(tag));
+    }
+
+    public void removeTag(User user, Tag tag) {
+        Optional<User> byId = userRepository.findById(user.getId());
+        byId.ifPresent(a -> a.getTags().remove(tag));
     }
 }

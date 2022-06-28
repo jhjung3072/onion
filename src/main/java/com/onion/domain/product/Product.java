@@ -1,6 +1,7 @@
 package com.onion.domain.product;
 
 import com.onion.domain.Location;
+import com.onion.domain.Tag;
 import com.onion.domain.User;
 import com.onion.domain.Watchlist;
 import lombok.*;
@@ -60,6 +61,9 @@ public class Product {
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ProductImage> images = new HashSet<>();
+
+	@ManyToMany
+	private Set<Tag> tags = new HashSet<>();
 
     public Product(Integer id) {
 		this.id = id;

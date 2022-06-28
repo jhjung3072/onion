@@ -29,6 +29,7 @@
 		  <li class="nav-item">
 		    <a class="nav-link" data-toggle="tab" href="#images" role="tab">이미지</a>
 		  </li>
+
 		</ul>
 		
 		<div class="tab-content">
@@ -43,6 +44,7 @@
 		  <div class="tab-pane" id="images" role="tabpanel">
 		  	<div th:replace="products/product_images :: content"></div>
 		  </div>
+
 		</div>	
 	</div>
 	<div class="text-center">
@@ -66,5 +68,6 @@
 <script th:src="@{/js/common_form.js}"></script>
 <script th:src="@{/js/product_form_images.js}"></script>
 <script th:src="@{/js/product_form_detail.js}"></script>
+<script th:replace="fragments.html :: update-tags(baseUrl='/my-products/edit/' + ${product.id} + '/tags')"></script>
 </body>
 </html>

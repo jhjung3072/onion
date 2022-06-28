@@ -10,7 +10,7 @@ import java.util.*;
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
-@AllArgsConstructor @Builder
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -90,6 +90,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Watchlist> watchlist=new HashSet<>();
+
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();
 
 
     public void addRole(Role role) {

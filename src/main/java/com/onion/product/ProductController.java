@@ -3,12 +3,16 @@ package com.onion.product;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onion.ControllerHelper;
 import com.onion.FileUploadUtil;
 import com.onion.config.OnionUserDetails;
 import com.onion.config.Utility;
 import com.onion.domain.Location;
+import com.onion.domain.Tag;
 import com.onion.domain.User;
 import com.onion.domain.product.Product;
 import com.onion.exception.ProductNotFoundException;
@@ -16,16 +20,18 @@ import com.onion.location.LocationService;
 
 import com.onion.paging.PagingAndSortingHelper;
 import com.onion.paging.PagingAndSortingParam;
+import com.onion.tag.TagForm;
+import com.onion.tag.TagRepository;
+import com.onion.tag.TagService;
 import com.onion.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,12 +39,16 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
+@RequiredArgsConstructor
 public class ProductController {
 	private String defaultRedirectURL = "redirect:/products/page/1?sortField=createdTime&sortDir=desc&locationId=";
-	@Autowired private ProductService productService;
-	@Autowired private LocationService locationService;
-	@Autowired private ControllerHelper controllerHelper;
-	
+	private final ProductService productService;
+	private final LocationService locationService;
+	private final ControllerHelper controllerHelper;
+	private final TagRepository tagRepository;
+	private final ObjectMapper objectMapper;
+	private final TagService tagService;
+
 	// 물건 목록 페이지 GET
 	@GetMapping("/products")
 	public String listFirstPage(Model model,HttpServletRequest request) {
@@ -191,7 +201,6 @@ public class ProductController {
 			model.addAttribute("product", product);
 			model.addAttribute("pageTitle", "물건 수정 (ID: " + id + ")");
 			model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
-
 			return "products/product_form";
 
 		} catch (ProductNotFoundException e) {
@@ -260,6 +269,45 @@ public class ProductController {
 		model.addAttribute("listResult", listResult);
 
 		return "products/search_result";
+	}
+
+
+	@GetMapping("/my-products/edit/{id}/tags")
+	public String ProductTagsForm(HttpServletRequest request, @PathVariable("id") Integer id,Model model)
+			throws JsonProcessingException, ProductNotFoundException {
+		User user=controllerHelper.getAuthenticatedUser(request);
+		Product product = productService.get(id);
+		model.addAttribute(user);
+		model.addAttribute(product);
+
+		model.addAttribute("tags", product.getTags().stream()
+				.map(Tag::getTitle).collect(Collectors.toList()));
+		List<String> allTagTitles = tagRepository.findAll().stream()
+				.map(Tag::getTitle).collect(Collectors.toList());
+		model.addAttribute("whitelist", objectMapper.writeValueAsString(allTagTitles));
+		return "products/product_tags";
+	}
+
+	@PostMapping("/my-products/edit/{id}/tags/add")
+	@ResponseBody
+	public ResponseEntity addTag(@PathVariable("id") Integer id, @RequestBody TagForm tagForm) throws ProductNotFoundException {
+		Product product = productService.get(id);
+		Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
+		productService.addTag(product, tag);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/my-products/edit/{id}/tags/remove")
+	@ResponseBody
+	public ResponseEntity removeTag(@PathVariable("id") Integer id, @RequestBody TagForm tagForm) throws ProductNotFoundException {
+		Product product = productService.get(id);
+		Tag tag = tagRepository.findByTitle(tagForm.getTagTitle());
+		if (tag == null) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		productService.removeTag(product, tag);
+		return ResponseEntity.ok().build();
 	}
 
 }

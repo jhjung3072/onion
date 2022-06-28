@@ -54,9 +54,9 @@
 					<td class="hideable-column">[[${product.createdTime}]]</td>
 					<td>
 
-						&nbsp;<div th:replace="fragments :: edit('product', '/my-products/edit/' + ${product.id})" />
+						&nbsp;<div th:replace="fragments :: tag('product','/my-products/edit/'+ ${product.id}+'/tags')" />
 
-
+						<div th:replace="fragments :: edit('product', '/my-products/edit/' + ${product.id})" />
 						&nbsp; 
 						<div th:replace="fragments :: delete('product', ${product.id}, '/my-products/delete/' + ${product.id}, true)" />
 

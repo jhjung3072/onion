@@ -9,11 +9,17 @@
     <div th:replace="fragments.html :: settings-menu(currentMenu='notification')"></div>
 </div>
 <div class="col-8">
+    <div class="row">
+        <h2 class="col-12" style="text-align: center">알림 설정</h2>
+    </div>
     <div class="row mt-3">
         <div th:object="${user}" style="max-width: 600px; margin: 0 auto">
             <input type="hidden" name="redirect" th:value="${param.redirect}" />
             <div th:if="${message != null}" class="alert alert-success text-center">
                 [[${message}]]
+            </div>
+            <div class="alert alert-info" role="alert">
+                태그에 등록된 키워드의 물건이 등록되면 알림을 받을지 선택하세요
             </div>
             <div class="border border-secondary rounded p-3" style="width: 300px">
                 <div class="form-group row">

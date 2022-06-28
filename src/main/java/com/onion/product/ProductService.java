@@ -6,11 +6,15 @@ import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
+import com.onion.domain.Tag;
 import com.onion.domain.User;
 import com.onion.domain.product.Product;
 import com.onion.exception.ProductNotFoundException;
 import com.onion.paging.PagingAndSortingHelper;
+import com.onion.product.event.ProductCreatedEvent;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +24,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ProductService {
 	public static final int PRODUCTS_PER_PAGE = 5;
 
-	@Autowired private ProductRepository repo;
+	private final ProductRepository repo;
+
+	private final ApplicationEventPublisher eventPublisher;
 	
 	// 물건 목록
 	public List<Product> listAll() {
@@ -79,10 +86,10 @@ public class ProductService {
 		product.setLocation(seller.getLocation());
 
 		Product updatedProduct = repo.save(product);
-
 		return updatedProduct;
+
 	}
-	
+
 	// 물건 가격저장
 	public void saveProductPrice(Product productInForm) {
 		Product productInDB = repo.findById(productInForm.getId()).get();
@@ -141,4 +148,15 @@ public class ProductService {
 		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE);
 		return repo.search(keyword, pageable);
     }
+
+
+	public void addTag(Product product, Tag tag) {
+		product.getTags().add(tag);
+		eventPublisher.publishEvent(new ProductCreatedEvent(product));
+
+	}
+
+	public void removeTag(Product product, Tag tag) {
+		product.getTags().remove(tag);
+	}
 }

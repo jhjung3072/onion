@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓', 'none')"/>
+<body class="bg-light">
+<div th:replace="navigation :: menu"></div>
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <h2 class="col-12" style="text-align: center">알림받을 태그</h2>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            알림받고 싶은 태그를 입력하세요. 해당 태그의 물건이 등록되면 알림을 보냅니다.
+                        </div>
+                        <div id="whitelist" th:text="${whitelist}" hidden></div>
+                        <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}" aria-describedby="tagHelp"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:replace="fragments.html :: ajax-csrf-header"></script>
+    <script th:replace="fragments.html :: update-tags(baseUrl='/tags')"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓', 'none')" />
+<body class="bg-light">
+<div th:replace="navigation :: menu"></div>
+    <div class="container">
+        <div class="row py-5 text-center">
+            <div class="col-3">
+                <ul class="list-group">
+                    <a href="#" th:href="@{/notifications}" th:classappend="${isNew}? active"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        읽지 않은 알림
+                        <span th:text="${numberOfNotChecked}">3</span>
+                    </a>
+                    <a href="#" th:href="@{/notifications/old}" th:classappend="${!isNew}? active"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        읽은 알림
+                        <span th:text="${numberOfChecked}">0</span>
+                    </a>
+                </ul>
+
+            </div>
+            <div class="col-9">
+                <div class="card" th:if="${notifications.size() == 0}">
+                    <div class="card-header">
+                        알림 메시지가 없습니다.
+                    </div>
+                </div>
+
+                <div class="card" th:if="${newProductNotification.size() > 0}">
+                    <div class="card-header">
+                        회원님의 지역에 해시태그에 등록된 물건이 등록되었습니다.
+                    </div>
+                    <div th:replace="fragments.html :: notification-list (notifications=${newProductNotification})"></div>
+                </div>
+
+
+            </div>
+        </div>
+        <div th:replace="fragments :: footer"></div>
+    </div>
+</body>
+</html>
