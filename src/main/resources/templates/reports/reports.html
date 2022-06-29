@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('오이마켓-판매통계', 'none')" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>주문 통계</h2>	
+	</div>
+	
+	<div>
+		<ul class="nav nav-tabs" id="reportTab" role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" data-toggle="tab" href="#date" role="tab">일별 판매량</a>
+		  </li>
+		</ul>
+		
+		<div class="tab-content">
+		  <div class="tab-pane active p-3" id="date" role="tabpanel">
+		  	<div th:replace="reports/sales_report_fragment::content('_date')"></div>
+		  </div>
+		 </div>
+	</div>
+	
+	<div th:replace="fragments :: footer"></div>
+	
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	contextPath = "[[@{/}]]";
+
+	$(document).ready(function() {
+		google.charts.load('current', {'packages': ['corechart','table']});
+		google.charts.setOnLoadCallback(loadSalesReportByDate);
+		google.charts.setOnLoadCallback(loadSalesReportByDate2);
+	});
+
+	
+</script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sales_report_common.js}"></script>
+<script type="text/javascript" th:src="@{/js/sales_report_by_date.js}"></script>
+<script type="text/javascript" th:src="@{/js/sales_report_by_category.js}"></script>
+<script type="text/javascript" th:src="@{/js/sales_report_by_product.js}"></script>
+</body>
+</html>

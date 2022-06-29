@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -68,4 +69,16 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
 	@EntityGraph(attributePaths = {"tags", "location"})
     Product findProductWithTagsAndLocationById(Integer id);
+
+	// 기간 내에 주문목록 리스트
+	// id, orderTime, productCost, subtotal, total 만 불러오기 위해 new 사용
+	@Query("SELECT NEW com.onion.domain.product.Product(p.id, p.createdTime, p.price) FROM Product p WHERE"
+			+ " p.createdTime BETWEEN ?1 and ?2 ORDER BY p.createdTime ASC")
+    List<Product> findByCreatedTimeBetween(Date startTime, Date endTime);
+
+	// 해당 기간에 주문을 카테고리별로 리스트 in 통계 페이지
+	// category.name, quantity, productCost, shippingCost, subtotal 만 불러오기 위해 new 사용
+	@Query("SELECT NEW com.onion.domain.product.Product(p.location.name, p.price)"
+			+ " FROM Product p WHERE p.createdTime BETWEEN ?1 AND ?2")
+	List<Product> findWithLocationAndTimeBetween(Date startDate, Date endDate);
 }

@@ -101,4 +101,15 @@ public class Product {
 		return "/p/" + this.id + "/";
 	}
 
+	public Product(Integer id, Date createdTime, float productPrice){
+		this.id=id;
+		this.createdTime=createdTime;
+		this.price=productPrice;
+	}
+
+	public Product(String locationName, float productPrice){
+		this.location=new Location(locationName);
+		this.price=productPrice;
+	}
+
 }

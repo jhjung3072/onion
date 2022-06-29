@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content(reportType)" th:remove="tag">
+	<div th:with="buttonClass = 'button-sales-by' + ${reportType}">
+		<button period="last_7_days" class="btn btn-primary m-1" th:classappend="${buttonClass}">지난 7일간의 통계</button>
+		<button period="last_28_days" class="btn btn-light m-1" th:classappend="${buttonClass}">지난 28일간의 통계</button>
+		<button period="last_6_months" class="btn btn-light m-1" th:classappend="${buttonClass}">지난 6개월간의 통계</button>
+		<button period="last_year" class="btn btn-light m-1" th:classappend="${buttonClass}">작년의 통계</button>
+		<button class="btn btn-light m-1" th:classappend="${buttonClass}">통계 범위 지정</button>
+	</div>
+	
+	<form>
+	<div th:id="'divCustomDateRange' + ${reportType}" class="d-none">
+		시작 날짜: <input type="date" th:id="'startDate' + ${reportType}"> &nbsp;
+		마지막 날짜: <input type="date" th:id="'endDate' + ${reportType}"> &nbsp;
+		<button type="button" class="btn btn-secondary" th:id="'buttonViewReportByDateRange' + ${reportType}">보기</button>
+	</div>
+	</form>
+	
+	<div th:id="'chart_sales_by' + ${reportType}" class="justify-content-center mt-3"></div>
+	<div th:id="'2chart_sales_by' + ${reportType}" class="justify-content-center mt-3"></div>
+	<div class="row justify-content-center">
+		<div class="col-2-sm">
+			<div class="card">
+				<div class="card-header"><b>등록 매물 총 금액</b></div>
+				<div class="card-body">
+					<span class="h3" th:id="'textTotalGrossSales' + ${reportType}"></span>
+				</div>
+			</div>
+		</div>
+		
+
+		<div class="col-2-sm">
+			<div class="card">
+				<div class="card-header"><b><span th:id="'labelTotalItems' + ${reportType}"></span></b></div>
+				<div class="card-body">
+					<span class="h3" th:id="'textTotalItems' + ${reportType}" style="text-align: center"></span>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+</div>
+</body>
+</html>

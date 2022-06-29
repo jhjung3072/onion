@@ -53,6 +53,7 @@
 							<a class="dropdown-item" href="#" th:href="@{'/locations'}">지역 관리</a>
 							<a class="dropdown-item" href="#" th:href="@{'/users'}">유저 관리</a>
 							<a class="dropdown-item" href="#" th:href="@{'/products'}">물건 관리</a>
+							<a class="dropdown-item" href="#" th:href="@{'/reports'}">거래 통계</a>
 						</th:block>
 						<th:block sec:authorize="hasAuthority('ROLE_USER')">
 						<a class="dropdown-item" href="#" th:href="@{'/my-products/new'}">내 물건 팔기</a>
