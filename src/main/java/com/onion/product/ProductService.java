@@ -90,13 +90,6 @@ public class ProductService {
 
 	}
 
-	// 물건 가격저장
-	public void saveProductPrice(Product productInForm) {
-		Product productInDB = repo.findById(productInForm.getId()).get();
-		productInDB.setPrice(productInForm.getPrice());
-		repo.save(productInDB);
-	}
-
 
 	// 물건 삭제
 	public void delete(Integer id) throws ProductNotFoundException {

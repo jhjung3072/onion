@@ -1,10 +1,6 @@
 package com.onion.domain.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import com.onion.domain.Constants;
 import javax.persistence.*;
 
 @Entity
@@ -63,7 +59,7 @@ public class ProductImage {
 
 	@Transient
 	public String getImagePath() {
-		return "/product-images/" + product.getId() + "/extras/" + this.name;
+		return Constants.S3_BASE_URI+"/product-images/" + product.getId() + "/extras/" + this.name;
 	}
 
 }
