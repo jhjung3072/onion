@@ -3,10 +3,7 @@ package com.onion.location;
 import java.util.*;
 import javax.transaction.Transactional;
 
-import com.onion.domain.Location;
 import com.onion.exception.LocationNotFoundException;
-import com.onion.exception.ProductNotFoundException;
-import com.onion.paging.PagingAndSortingHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

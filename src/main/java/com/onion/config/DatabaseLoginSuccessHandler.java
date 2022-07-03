@@ -1,11 +1,9 @@
 package com.onion.config;
 
-import com.onion.config.oauth.OAuth2LoginSuccessHandler;
-import com.onion.domain.AuthenticationType;
-import com.onion.domain.User;
+import com.onion.user.AuthenticationType;
+import com.onion.user.User;
 
 import com.onion.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;

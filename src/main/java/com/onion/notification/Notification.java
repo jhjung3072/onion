@@ -1,6 +1,7 @@
-package com.onion.domain;
+package com.onion.notification;
 
 import com.onion.notification.NotificationType;
+import com.onion.user.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

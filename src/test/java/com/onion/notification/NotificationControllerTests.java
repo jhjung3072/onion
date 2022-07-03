@@ -1,7 +1,6 @@
 package com.onion.notification;
 
-import com.onion.domain.Notification;
-import com.onion.domain.User;
+import com.onion.user.User;
 import com.onion.infra.MockMvcTest;
 import com.onion.location.LocationRepository;
 import com.onion.location.LocationService;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
 import java.util.List;

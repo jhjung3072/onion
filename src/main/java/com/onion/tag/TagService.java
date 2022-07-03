@@ -1,7 +1,6 @@
 package com.onion.tag;
 
-import com.onion.domain.Tag;
-import com.onion.domain.product.Product;
+import com.onion.product.product.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

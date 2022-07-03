@@ -1,17 +1,13 @@
 package com.onion.product;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.onion.FileUploadUtil;
 import com.onion.config.AmazonS3Util;
-import com.onion.domain.product.Product;
-import com.onion.domain.product.ProductImage;
+import com.onion.product.product.Product;
+import com.onion.product.product.ProductImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;

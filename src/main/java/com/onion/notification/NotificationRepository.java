@@ -1,7 +1,6 @@
 package com.onion.notification;
 
-import com.onion.domain.Notification;
-import com.onion.domain.User;
+import com.onion.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;

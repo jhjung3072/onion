@@ -2,19 +2,16 @@ package com.onion.product;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onion.ControllerHelper;
 import com.onion.FileUploadUtil;
-import com.onion.config.OnionUserDetails;
-import com.onion.config.Utility;
-import com.onion.domain.Location;
-import com.onion.domain.Tag;
-import com.onion.domain.User;
-import com.onion.domain.product.Product;
+import com.onion.location.Location;
+import com.onion.tag.Tag;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import com.onion.exception.ProductNotFoundException;
 import com.onion.location.LocationService;
 
@@ -23,12 +20,9 @@ import com.onion.paging.PagingAndSortingParam;
 import com.onion.tag.TagForm;
 import com.onion.tag.TagRepository;
 import com.onion.tag.TagService;
-import com.onion.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

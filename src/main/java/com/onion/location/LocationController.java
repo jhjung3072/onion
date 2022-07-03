@@ -3,7 +3,6 @@ package com.onion.location;
 import java.io.IOException;
 import java.util.List;
 
-import com.onion.domain.Location;
 import com.onion.exception.LocationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

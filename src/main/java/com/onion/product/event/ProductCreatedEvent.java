@@ -1,6 +1,6 @@
 package com.onion.product.event;
 
-import com.onion.domain.product.Product;
+import com.onion.product.product.Product;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

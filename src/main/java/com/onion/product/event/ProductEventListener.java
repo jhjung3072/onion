@@ -1,9 +1,9 @@
 package com.onion.product.event;
 
 
-import com.onion.domain.Notification;
-import com.onion.domain.User;
-import com.onion.domain.product.Product;
+import com.onion.notification.Notification;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import com.onion.notification.NotificationRepository;
 import com.onion.notification.NotificationType;
 import com.onion.product.ProductRepository;

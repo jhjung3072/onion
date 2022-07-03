@@ -1,6 +1,5 @@
 package com.onion.user;
 
-import com.onion.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

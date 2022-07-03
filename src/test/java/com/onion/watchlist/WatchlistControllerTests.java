@@ -1,7 +1,6 @@
 package com.onion.watchlist;
 
-import com.onion.domain.Location;
-import com.onion.domain.User;
+import com.onion.user.User;
 import com.onion.infra.MockMvcTest;
 import com.onion.location.LocationRepository;
 import com.onion.location.LocationService;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

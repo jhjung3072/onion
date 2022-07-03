@@ -2,11 +2,9 @@ package com.onion.watchlist;
 
 import java.util.List;
 
-import com.onion.domain.User;
-import com.onion.domain.Watchlist;
-import com.onion.domain.product.Product;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import com.onion.exception.WatchlistException;
-import com.onion.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

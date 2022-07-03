@@ -6,8 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.onion.domain.AuthenticationType;
-import com.onion.domain.User;
+import com.onion.user.AuthenticationType;
+import com.onion.user.User;
 import com.onion.exception.LocationNotFoundException;
 import com.onion.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

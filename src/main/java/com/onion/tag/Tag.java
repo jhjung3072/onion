@@ -1,4 +1,4 @@
-package com.onion.domain;
+package com.onion.tag;
 
 import lombok.*;
 

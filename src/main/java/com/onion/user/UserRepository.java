@@ -1,7 +1,5 @@
 package com.onion.user;
 
-import com.onion.domain.AuthenticationType;
-import com.onion.domain.User;
 import com.onion.paging.SearchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

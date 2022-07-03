@@ -1,6 +1,5 @@
 package com.onion.notification;
 
-import com.onion.domain.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

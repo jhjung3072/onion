@@ -1,8 +1,7 @@
 package com.onion.watchlist;
 
-import com.onion.domain.User;
-import com.onion.domain.Watchlist;
-import com.onion.domain.product.Product;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import com.onion.infra.MockMvcTest;
 import com.onion.location.LocationRepository;
 import static org.assertj.core.api.Assertions.assertThat;

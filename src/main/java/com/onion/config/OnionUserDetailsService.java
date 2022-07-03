@@ -1,12 +1,11 @@
 package com.onion.config;
 
-import com.onion.domain.User;
+import com.onion.user.User;
 import com.onion.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 
 public class OnionUserDetailsService implements UserDetailsService {

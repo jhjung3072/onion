@@ -1,12 +1,11 @@
 package com.onion.main;
 
 import com.onion.ControllerHelper;
-import com.onion.domain.User;
-import com.onion.domain.product.Product;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import com.onion.location.LocationService;
 import com.onion.product.ProductService;
 import com.onion.user.RoleRepository;
-import com.onion.user.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

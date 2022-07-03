@@ -3,7 +3,7 @@ package com.onion.watchlist;
 import javax.servlet.http.HttpServletRequest;
 
 import com.onion.config.Utility;
-import com.onion.domain.User;
+import com.onion.user.User;
 import com.onion.exception.UserNotFoundException;
 import com.onion.exception.WatchlistException;
 import com.onion.user.UserService;

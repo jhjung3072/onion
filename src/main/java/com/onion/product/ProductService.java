@@ -6,14 +6,13 @@ import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
-import com.onion.domain.Tag;
-import com.onion.domain.User;
-import com.onion.domain.product.Product;
+import com.onion.tag.Tag;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import com.onion.exception.ProductNotFoundException;
 import com.onion.paging.PagingAndSortingHelper;
 import com.onion.product.event.ProductCreatedEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

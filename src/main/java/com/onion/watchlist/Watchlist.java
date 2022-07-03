@@ -1,6 +1,7 @@
-package com.onion.domain;
+package com.onion.watchlist;
 
-import com.onion.domain.product.Product;
+import com.onion.product.product.Product;
+import com.onion.user.User;
 import lombok.*;
 
 import javax.persistence.*;

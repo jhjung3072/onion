@@ -1,6 +1,5 @@
 package com.onion.user;
 
-import com.onion.domain.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

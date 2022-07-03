@@ -2,9 +2,8 @@ package com.onion.watchlist;
 
 import java.util.List;
 
-import com.onion.domain.User;
-import com.onion.domain.Watchlist;
-import com.onion.domain.product.Product;
+import com.onion.user.User;
+import com.onion.product.product.Product;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

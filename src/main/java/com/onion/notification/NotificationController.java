@@ -1,8 +1,7 @@
 package com.onion.notification;
 
 import com.onion.ControllerHelper;
-import com.onion.domain.Notification;
-import com.onion.domain.User;
+import com.onion.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

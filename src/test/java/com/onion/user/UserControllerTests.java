@@ -3,8 +3,6 @@ package com.onion.user;
 
 import com.onion.config.mail.EmailMessage;
 import com.onion.config.mail.EmailService;
-import com.onion.domain.Location;
-import com.onion.domain.User;
 import com.onion.infra.MockMvcTest;
 import com.onion.location.LocationRepository;
 import com.onion.location.LocationService;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,9 +19,6 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
 
 
 @MockMvcTest

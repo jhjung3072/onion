@@ -1,7 +1,7 @@
 package com.onion.config;
 
-import com.onion.domain.Role;
-import com.onion.domain.User;
+import com.onion.user.Role;
+import com.onion.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

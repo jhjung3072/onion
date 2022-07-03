@@ -2,8 +2,7 @@ package com.onion.user;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onion.domain.Tag;
-import com.onion.domain.User;
+import com.onion.tag.Tag;
 
 import com.onion.infra.MockMvcTest;
 import com.onion.location.LocationRepository;
@@ -14,10 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;

@@ -3,7 +3,7 @@ package com.onion;
 import javax.servlet.http.HttpServletRequest;
 
 import com.onion.config.Utility;
-import com.onion.domain.User;
+import com.onion.user.User;
 import com.onion.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
