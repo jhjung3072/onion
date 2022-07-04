@@ -1,7 +1,7 @@
 package com.onion.user;
 
 import com.onion.location.Location;
-import com.onion.domain.QUser;
+
 import com.onion.tag.Tag;
 import com.querydsl.core.types.Predicate;
 

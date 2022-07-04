@@ -1,6 +1,6 @@
 package com.onion.notification;
 
-import com.onion.notification.NotificationType;
+
 import com.onion.user.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,9 +24,8 @@ public class Notification {
 
     private boolean checked;
 
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY)
     private User user;
-
     private LocalDateTime createdDateTime;
 
     @Enumerated(EnumType.STRING)

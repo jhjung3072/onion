@@ -1,9 +1,9 @@
 package com.onion.location;
 
-import com.onion.domain.Location;
-import com.onion.domain.User;
+
 import com.onion.infra.MockMvcTest;
 import com.onion.user.RoleService;
+import com.onion.user.User;
 import com.onion.user.UserRepository;
 import com.onion.user.UserService;
 import org.junit.jupiter.api.AfterEach;

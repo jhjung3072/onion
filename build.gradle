@@ -91,7 +91,3 @@ task appNpmInstall(type: NpmTask) {
 	workingDir = file("/src/main/resources/static")
 	args = ['install']
 }
-
-clean.doLast {
-	file(generated).deleteDir()
-}

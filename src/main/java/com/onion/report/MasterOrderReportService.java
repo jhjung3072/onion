@@ -18,20 +18,20 @@ public class MasterOrderReportService extends AbstractReportService{
 
 	
 	protected List<ReportItem> getReportDataByDateRangeInternal(Date startTime, Date endTime, ReportType reportType) {
-		// 기간 내에 주문목록 리스트를 불러옴
+		// 기간 내에 등록된 물건 리스트를 불러옴
 		List<Product> listProducts = repo.findByCreatedTimeBetween(startTime, endTime);
 
 		// 통계 시작 및 종료 날짜, 통계 타입을 입력받아 통계를 생성
 		List<ReportItem> listReportItems = createReportData(startTime, endTime, reportType);
 		
 		System.out.println();
-		// 통계에서 매출과 순이익, 주문횟수를 계산
+		// 통계에서 등록된 물건의 가격과, 등록 개수를 계산
 		calculateSalesForReportData(listProducts, listReportItems);
 		
 		return listReportItems;
 	}
 
-	// 통계에서 매출과 순이익, 주문횟수를 계산하기 위한 함수
+	// 통계에서 등록된 물건의 가격과, 등록 개수를 계산하기 위한 함수
 	private void calculateSalesForReportData(List<Product> listProducts, List<ReportItem> listReportItems) {
 		for (Product product : listProducts) {
 			String productDateString = dateFormatter.format(product.getCreatedTime());

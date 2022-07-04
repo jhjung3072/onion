@@ -82,7 +82,7 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_locations",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -90,10 +90,10 @@ public class User {
     )
     private Location location;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Watchlist> watchlist=new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Tag> tags = new HashSet<>();
 
 

@@ -138,7 +138,7 @@ public class ProductService {
 
     public Page<Product> search(String keyword, int pageNum) {
 		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE);
-		return repo.search(keyword, pageable);
+		return repo.findByKeyword(keyword, pageable);
     }
 
 

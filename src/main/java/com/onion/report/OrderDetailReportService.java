@@ -20,26 +20,11 @@ public class OrderDetailReportService extends AbstractReportService {
 			Date startDate, Date endDate, ReportType reportType) {
 		List<Product> listProducts = null;
 		
-		// 통계타입이 카테고리이면 해당 기간에 주문을 카테고리별로 리스트
-		if (reportType.equals(ReportType.CATEGORY)) {
-			listProducts = repo.findWithLocationAndTimeBetween(startDate, endDate);
-		} else if (reportType.equals(ReportType.PRODUCT)) { // 통계타입이 상품이면 해당 기간에 주문을 상품별로 리스트
-			listProducts = repo.findByCreatedTimeBetween(startDate, endDate);
-		}
-		
-		//printRawData(listOrderDetails);
-		
 		List<ReportItem> listReportItems = new ArrayList<>();
 		
 		for (Product detail : listProducts) {
 			String identifier = "";
 			
-			// 통계타입이 카테고리이면 카테고리 이름
-			if (reportType.equals(ReportType.CATEGORY)) {
-				identifier = detail.getLocation().getName();
-			} else if (reportType.equals(ReportType.PRODUCT)) { // 통계타입이 상품이면 상품 이름
-				identifier = detail.getName();
-			}
 			
 			ReportItem reportItem = new ReportItem(identifier);
 			
@@ -50,7 +35,7 @@ public class OrderDetailReportService extends AbstractReportService {
 			if (itemIndex >= 0) {
 				reportItem = listReportItems.get(itemIndex);
 				reportItem.addGrossSales(grossSales);
-				reportItem.increaseProductsCount(1); // 판매량 갯수 증가
+				reportItem.increaseProductsCount(1); // 등록된 물건 개수 카운트
 			} else {
 				listReportItems.add(new ReportItem(identifier, grossSales, 1));
 			}

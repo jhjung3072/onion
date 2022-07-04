@@ -46,7 +46,7 @@ public class Product {
 	@Column(name = "main_image", nullable = false)
 	private String mainImage;
 		
-	@ManyToOne
+	@ManyToOne( fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
 	private Location location;
 

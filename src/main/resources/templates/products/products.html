@@ -18,9 +18,14 @@
 			지역:&nbsp;
 			<select class="form-control" name="locationId" id="dropdownLocation">
 				<option value="0">모든 지역</option>
-				
+
 				<th:block th:each="cat : ${listLocations}">
-				<option th:value="${cat.id}" th:selected="(${locationId} == ${cat.id})">[[${cat.name}]]</option>
+					<th:block th:if="${!cat.hasChildren} ">
+						<option th:value="${cat.id}" disabled>[[${cat.name}]]</option>
+					</th:block>
+					<th:block th:if="${cat.hasChildren} ">
+						<option th:value="${cat.id}">[[${cat.name}]]</option>
+					</th:block>
 				</th:block>
 			</select>
 			

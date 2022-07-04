@@ -19,7 +19,7 @@ public class Location  {
 	@Column(name = "all_parent_ids", length = 256, nullable = true)
 	private String allParentIDs;
 
-	@OneToOne
+	@OneToOne( fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Location parent;
 

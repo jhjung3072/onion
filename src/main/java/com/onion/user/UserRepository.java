@@ -3,6 +3,7 @@ package com.onion.user;
 import com.onion.paging.SearchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -47,4 +48,7 @@ public interface UserRepository extends SearchRepository<User, Integer> , Queryd
     @Query("UPDATE User u SET u.authenticationType = ?2 WHERE u.id = ?1")
     @Modifying
     void updateAuthenticationType(Integer userId, AuthenticationType type);
+
+    @EntityGraph(attributePaths = {"tags", "location"})
+    User findUserWithTagsAndLocationById(Integer id);
 }
