@@ -20,7 +20,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
 	Long countById(Integer id);
 
-	@EntityGraph(attributePaths = {"seller"})
+	@EntityGraph(attributePaths = {"location", "seller"})
 	@Query("SELECT p FROM Product p WHERE p.seller.enabled=true")
 	Page<Product>findAll(Pageable pageable);
 

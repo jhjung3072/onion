@@ -51,40 +51,5 @@ public class ReportRestController {
 		return masterOrderReportService.getReportDataByDateRange(startTime, endTime,ReportType.DAY);
 	}
 	
-	// 사용자가 지정한 기간의 카테고리, 상품 별 통계를 보여주는 함수
-	@GetMapping("/reports/{groupBy}/{startDate}/{endDate}")
-	public List<ReportItem> getReportDataByCategoryOrProductDateRange(@PathVariable("groupBy") String groupBy,
-			@PathVariable("startDate") String startDate,
-			@PathVariable("endDate") String endDate) throws ParseException {
-		ReportType reportType=ReportType.valueOf(groupBy.toUpperCase());
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date startTime = dateFormatter.parse(startDate);
-		Date endTime = dateFormatter.parse(endDate);
-		
-		return orderDetailReportService.getReportDataByDateRange(startTime, endTime,reportType);
-	}
-	
-	//  카테고리, 상품 별 통계를 보여주는 함수
-	@GetMapping("/reports/{groupBy}/{period}")
-	public List<ReportItem> getReportDataByCategoryOrProduct(@PathVariable("groupBy") String groupBy,
-				@PathVariable("period") String period){
-		ReportType reportType=ReportType.valueOf(groupBy.toUpperCase());
-		
-		switch (period) {
-		case "last_7_days":
-			return orderDetailReportService.getReportDataLast7Days(reportType);
-			
-		case "last_28_days":
-			return orderDetailReportService.getReportDataLast28Days(reportType);
 
-		case "last_6_months":
-			return orderDetailReportService.getReportDataLast6Months(reportType);
-
-		case "last_year":
-			return orderDetailReportService.getReportDataLastYear(reportType);
-			
-		default:
-			return orderDetailReportService.getReportDataLast7Days(reportType);
-	}
-	}
 }

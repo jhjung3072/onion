@@ -1,13 +1,12 @@
 package com.onion.main;
 
 import com.onion.ControllerHelper;
+import com.onion.location.LocationService;
 import com.onion.product.ProductRepository;
+import com.onion.product.ProductService;
+import com.onion.product.product.Product;
 import com.onion.user.RoleService;
 import com.onion.user.User;
-import com.onion.product.product.Product;
-import com.onion.location.LocationService;
-import com.onion.product.ProductService;
-import com.onion.user.RoleRepository;
 import com.onion.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,11 +24,8 @@ public class MainController {
 
     private String defaultRedirectURL = "redirect:/products/page/1?sortField=name&sortDir=asc&locationId=";
     @Autowired private ProductService productService;
-    @Autowired private LocationService locationService;
     @Autowired private ControllerHelper controllerHelper;
-    @Autowired private RoleService roleService;
-    @Autowired private UserRepository userRepository;
-    @Autowired private ProductRepository productRepository;
+
 
     // 인증받지 않은 사용자(비로그인 사용자)일 경우에 로그인 페이지 GET
     @GetMapping("/login")
